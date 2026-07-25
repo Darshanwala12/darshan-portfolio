@@ -1,0 +1,1260 @@
+<title>Darshan Wala — Full-Stack Developer</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#050816;--bg1:#0b1120;--bg2:#111827;--bg3:#1f2937;
+  --b0:rgba(255,255,255,.07);--b1:rgba(59,130,246,.35);
+  --blue:#3b82f6;--blo:rgba(59,130,246,.1);--cyan:#22d3ee;--purple:#a78bfa;--green:#34d399;
+  --t0:#f8fafc;--t1:#cbd5e1;--t2:#94a3b8;--t3:#475569;
+  --fs:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --fm:'Cascadia Code','JetBrains Mono','Consolas',monospace;
+  --mw:1200px;--py:96px;
+  --glow:0 0 40px rgba(59,130,246,.18);
+  --ease:cubic-bezier(.4,0,.2,1);--dur:280ms;
+  --grad:linear-gradient(135deg,#3b82f6 0%,#22d3ee 50%,#a78bfa 100%);
+  --r-sm:6px;--r-md:10px;--r-lg:16px
+}
+[data-theme=light]{
+  --bg0:#f8fafc;--bg1:#f1f5f9;--bg2:#fff;--bg3:#e2e8f0;
+  --b0:rgba(15,23,42,.08);--b1:rgba(59,130,246,.3);
+  --t0:#0f172a;--t1:#1e293b;--t2:#475569;--t3:#94a3b8;
+  --glow:0 4px 24px rgba(59,130,246,.1);--blo:rgba(59,130,246,.06)
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--fs);background:var(--bg0);color:var(--t0);line-height:1.6;overflow-x:hidden;cursor:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+/* progress */
+#pb{position:fixed;top:0;left:0;height:2px;background:var(--grad);z-index:9999;width:0;transition:width .1s linear}
+
+/* cursor */
+#cd,#cr{position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);border-radius:50%}
+#cd{width:6px;height:6px;background:var(--blue);transition:transform .08s}
+#cr{width:32px;height:32px;border:1.5px solid rgba(59,130,246,.45);transition:transform .16s var(--ease),width .2s,height .2s,border-color .2s}
+
+/* loader */
+#ldr{position:fixed;inset:0;background:var(--bg0);z-index:9990;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;transition:opacity .5s,visibility .5s}
+#ldr.gone{opacity:0;visibility:hidden;pointer-events:none}
+.ldr-name{font-size:22px;font-weight:800;letter-spacing:-.04em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ldr-bar{width:160px;height:2px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.ldr-fill{height:100%;background:var(--grad);border-radius:2px;animation:lf 1.3s ease forwards}
+@keyframes lf{from{width:0}to{width:100%}}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;transition:background var(--dur),border-color var(--dur);border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(5,8,22,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:var(--b0)}
+[data-theme=light] nav.scrolled{background:rgba(248,250,252,.88)}
+.n-logo{font-size:19px;font-weight:800;letter-spacing:-.05em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;text-decoration:none}
+.n-links{display:flex;gap:32px;list-style:none}
+.n-links a{font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;letter-spacing:.01em;transition:color var(--dur);cursor:pointer}
+.n-links a:hover{color:var(--t0)}.n-links a.act{color:var(--blue)}
+.n-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--b0);background:transparent;color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all var(--dur)}
+.icon-btn:hover{border-color:var(--b1);color:var(--t0)}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;transition:all var(--dur) var(--ease);border:none;font-family:var(--fs);letter-spacing:.01em}
+.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:#2563eb;box-shadow:var(--glow);transform:translateY(-1px)}
+.btn-g{background:transparent;color:var(--t1);border:1px solid var(--b0)}.btn-g:hover{border-color:var(--b1);color:var(--t0);background:var(--blo)}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}.hbg span{display:block;width:22px;height:2px;background:var(--t1);border-radius:2px;transition:all var(--dur)}
+.mob-nav{position:fixed;top:64px;inset-inline:0;bottom:0;background:rgba(5,8,22,.97);backdrop-filter:blur(20px);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;transform:translateX(100%);transition:transform .4s var(--ease)}
+.mob-nav.open{transform:translateX(0)}
+.mob-nav a{font-size:26px;font-weight:700;color:var(--t1);text-decoration:none;cursor:pointer}
+
+/* utils */
+.wrap{max-width:var(--mw);margin:0 auto}
+section{padding:var(--py) 48px}
+.sec-label{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.sec-label::before{content:'';display:block;width:20px;height:1px;background:var(--blue)}
+.sec-title{font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-.035em;line-height:1.12;color:var(--t0);text-wrap:balance}
+.sec-sub{font-size:16px;color:var(--t2);margin-top:12px;max-width:520px;line-height:1.7}
+.grad-t{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+/* hero */
+#hero{min-height:100vh;padding:0 48px;display:flex;align-items:center;position:relative;overflow:hidden}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 75% 75% at 50% 50%,black 30%,transparent 100%)}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(59,130,246,.1),transparent 70%);top:-200px;left:-200px;animation:of 9s ease-in-out infinite}
+.o2{width:500px;height:500px;background:radial-gradient(circle,rgba(167,139,250,.09),transparent 70%);top:50px;right:-150px;animation:of 11s ease-in-out infinite reverse}
+.o3{width:400px;height:400px;background:radial-gradient(circle,rgba(34,211,238,.07),transparent 70%);bottom:-100px;left:45%;animation:of 13s ease-in-out infinite 2s}
+@keyframes of{0%,100%{transform:translate(0,0)}33%{transform:translate(20px,-30px)}66%{transform:translate(-15px,20px)}}
+.h-inner{position:relative;z-index:1;max-width:var(--mw);margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding-top:80px}
+.h-avail{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid rgba(52,211,153,.25);border-radius:100px;font-size:12px;font-weight:500;color:var(--green);background:rgba(52,211,153,.06);margin-bottom:22px}
+.adot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pg 2s infinite}
+@keyframes pg{0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}50%{box-shadow:0 0 0 6px rgba(52,211,153,0)}}
+.h-hi{font-size:15px;font-weight:500;color:var(--t2);margin-bottom:10px;font-family:var(--fm);display:flex;align-items:center;gap:8px}
+.h-hi::before{content:'>';color:var(--blue);font-weight:700}
+.h-name{font-size:clamp(44px,6vw,76px);font-weight:800;letter-spacing:-.04em;line-height:1.05;color:var(--t0);margin-bottom:10px}
+.h-name .ln{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.h-role{font-size:clamp(16px,2vw,21px);font-weight:500;color:var(--t2);margin-bottom:22px;display:flex;align-items:center;gap:6px;min-height:32px}
+.typ{color:var(--t0)}
+.cur{display:inline-block;width:2px;height:1em;background:var(--blue);margin-left:2px;animation:bl 1s step-end infinite;vertical-align:middle}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+.h-desc{font-size:15px;color:var(--t2);line-height:1.8;max-width:460px;margin-bottom:32px}
+.h-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:44px}
+.h-stats{display:flex;gap:36px;padding-top:32px;border-top:1px solid var(--b0)}
+.st{display:flex;flex-direction:column;gap:3px}
+.st-n{font-size:28px;font-weight:800;letter-spacing:-.04em;line-height:1}.st-n span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.st-l{font-size:11px;color:var(--t3);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
+
+/* terminal */
+.term{background:#0d1117;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55);animation:tg 5s ease-in-out infinite alternate}
+@keyframes tg{from{box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 60px rgba(59,130,246,.04)}to{box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 80px rgba(167,139,250,.08)}}
+.term-h{padding:13px 18px;background:#161b22;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.05)}
+.term-dots{display:flex;gap:6px}.term-dots span{width:12px;height:12px;border-radius:50%}
+.term-dots span:nth-child(1){background:#ff5f57}.term-dots span:nth-child(2){background:#febb2d}.term-dots span:nth-child(3){background:#28ca41}
+.term-title{font-size:11px;color:rgba(255,255,255,.25);font-family:var(--fm);margin-left:auto}
+.term-b{padding:22px;font-family:var(--fm);font-size:12.5px;line-height:1.9;min-height:280px}
+.tl{display:flex;gap:8px;opacity:0;animation:ta .3s forwards}
+.tp{color:var(--blue);user-select:none}.tc{color:#e5e7eb}.to{color:var(--cyan);padding-left:20px}.ts{color:var(--green);padding-left:20px}.td{color:#4b5563}
+@keyframes ta{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.tl:nth-child(1){animation-delay:.6s}.tl:nth-child(2){animation-delay:1.3s}.tl:nth-child(3){animation-delay:2s}.tl:nth-child(4){animation-delay:2.5s}.tl:nth-child(5){animation-delay:3s}.tl:nth-child(6){animation-delay:3.4s}.tl:nth-child(7){animation-delay:3.8s}.tl:nth-child(8){animation-delay:4.2s}.tl:nth-child(9){animation-delay:4.6s}.tl:nth-child(10){animation-delay:5s}.tl:nth-child(11){animation-delay:5.3s}.tl:nth-child(12){animation-delay:5.6s}
+
+/* about */
+#about{background:var(--bg1)}
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.ab-text p{font-size:15px;color:var(--t2);line-height:1.85;margin-bottom:18px}
+.ab-text p strong{color:var(--t0);font-weight:600}
+.hl{color:var(--blue);font-weight:600}
+.ab-socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.soc{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--b0);border-radius:8px;font-size:12px;font-weight:500;color:var(--t2);text-decoration:none;transition:all var(--dur);cursor:pointer}
+.soc:hover{border-color:var(--b1);color:var(--t0);background:var(--blo)}
+.ab-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.ab-sc{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-lg);padding:22px;transition:border-color var(--dur),transform var(--dur)}
+.ab-sc:hover{border-color:var(--b1);transform:translateY(-2px)}
+.ab-sn{font-size:38px;font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:6px}
+.ab-sl{font-size:12px;color:var(--t2);font-weight:500}
+.ph-card{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-lg);padding:24px;position:relative;overflow:hidden}
+.ph-card::before{content:'"';position:absolute;top:-24px;right:16px;font-size:130px;color:rgba(59,130,246,.05);font-weight:900;line-height:1;pointer-events:none}
+.ph-text{font-size:14px;color:var(--t1);line-height:1.8;font-style:italic}
+.ph-attr{font-size:12px;color:var(--t3);margin-top:12px;font-weight:500}
+
+/* skills */
+#skills{background:var(--bg0)}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px}
+.sk-card{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-lg);padding:26px;transition:border-color var(--dur),transform var(--dur),box-shadow var(--dur)}
+.sk-card:hover{border-color:var(--b1);transform:translateY(-3px);box-shadow:var(--glow)}
+.sk-ic{font-size:26px;margin-bottom:12px;display:block}
+.sk-cat{font-size:13px;font-weight:700;color:var(--t0);margin-bottom:12px;letter-spacing:-.01em}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{padding:3px 9px;border-radius:100px;font-size:11px;font-weight:500;font-family:var(--fm);background:var(--bg3);color:var(--t2);border:1px solid var(--b0);transition:all var(--dur)}
+.tag:hover{background:var(--blo);border-color:var(--b1);color:var(--blue)}
+.tag.a{background:var(--blo);border-color:rgba(59,130,246,.2);color:var(--blue)}
+.tag.c{background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.2);color:var(--cyan)}
+.tag.p{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.2);color:var(--purple)}
+
+/* experience */
+#experience{background:var(--bg1)}
+.tl-wrap{margin-top:52px;position:relative;padding-left:28px}
+.tl-wrap::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(to bottom,var(--blue),var(--purple),transparent)}
+.tl-item{position:relative;padding-left:36px;padding-bottom:44px;cursor:pointer}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-34px;top:5px;width:13px;height:13px;border:2px solid var(--blue);border-radius:50%;background:var(--bg1);transition:all var(--dur)}
+.tl-item:hover .tl-dot{background:var(--blue);box-shadow:0 0 12px rgba(59,130,246,.5)}
+.tl-per{font-size:11px;font-weight:600;color:var(--blue);letter-spacing:.07em;text-transform:uppercase;font-family:var(--fm);margin-bottom:6px}
+.tl-role{font-size:19px;font-weight:700;color:var(--t0);letter-spacing:-.02em;margin-bottom:3px}
+.tl-co{font-size:14px;color:var(--t2);margin-bottom:12px;font-weight:500}
+.tl-body{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.tl-item.exp .tl-body{max-height:600px}
+.tl-body ul{list-style:none}
+.tl-body li{font-size:13px;color:var(--t2);padding:5px 0 5px 16px;position:relative;line-height:1.65}
+.tl-body li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:11px;top:6px}
+.tl-tech{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.tl-tog{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);margin-top:4px;transition:color var(--dur)}
+.tl-item:hover .tl-tog{color:var(--blue)}
+.tog-ic{display:inline-block;transition:transform var(--dur)}
+.tl-item.exp .tog-ic{transform:rotate(90deg)}
+
+/* projects */
+#projects{background:var(--bg0)}
+.pj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;margin-top:52px}
+.pj-card{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-lg);overflow:hidden;transition:border-color var(--dur),transform var(--dur),box-shadow var(--dur);cursor:pointer;display:flex;flex-direction:column}
+.pj-card:hover{border-color:var(--b1);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.3),var(--glow)}
+.pj-vis{height:190px;position:relative;overflow:hidden;display:flex;align-items:center;font-family:var(--fm);font-size:12px;color:rgba(255,255,255,.45)}
+.pv1{background:linear-gradient(140deg,#0d1117 0%,#141c30 100%)}
+.pv2{background:linear-gradient(140deg,#0d1117 0%,#131e15 100%)}
+.pv3{background:linear-gradient(140deg,#0d1117 0%,#1a1528 100%)}
+.pv4{background:linear-gradient(140deg,#0d1117 0%,#141f1a 100%)}
+.pv5{background:linear-gradient(140deg,#0d1117 0%,#1e1530 100%)}
+.pv6{background:linear-gradient(140deg,#0d1117 0%,#0f1a20 100%)}
+.pj-code{padding:18px 22px;line-height:1.7;width:100%}
+.pj-code .cb{color:rgba(59,130,246,.75)}.pj-code .cg{color:rgba(52,211,153,.75)}.pj-code .cp{color:rgba(167,139,250,.75)}.pj-code .cc{color:rgba(34,211,238,.75)}.pj-code .cy{color:rgba(251,191,36,.7)}.pj-code .cm{color:rgba(255,255,255,.2)}
+.pj-badge{position:absolute;top:10px;right:10px;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.bl{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.2)}
+.bp{background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
+.pj-body{padding:22px;flex:1;display:flex;flex-direction:column}
+.pj-title{font-size:17px;font-weight:700;color:var(--t0);letter-spacing:-.02em;margin-bottom:7px}
+.pj-desc{font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:14px;flex:1}
+.pj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.pj-acts{display:flex;gap:8px}
+.pj-acts .btn{font-size:12px;padding:6px 13px}
+
+/* ticker */
+#techstack{background:var(--bg1);padding:64px 0;overflow:hidden}
+.tk-head{padding:0 48px;margin-bottom:36px}
+.tk-wrap{display:flex;flex-direction:column;gap:14px}
+.tk-row{display:flex;gap:12px;animation:tkl 35s linear infinite}
+.tk-row.rev{animation:tkr 35s linear infinite}
+.tk-row:hover{animation-play-state:paused}
+@keyframes tkl{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes tkr{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.tc{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;background:var(--bg2);border:1px solid var(--b0);border-radius:100px;font-size:12.5px;font-weight:500;color:var(--t1);white-space:nowrap;transition:all var(--dur)}
+.tc:hover{border-color:var(--b1);color:var(--t0);background:var(--blo)}
+.tc-ic{font-size:15px}
+
+/* services */
+#services{background:var(--bg0)}
+.sv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:52px}
+.sv-card{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-lg);padding:28px 24px;transition:all var(--dur);position:relative;overflow:hidden}
+.sv-card::after{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:opacity var(--dur)}
+.sv-card:hover{border-color:transparent;transform:translateY(-3px);box-shadow:var(--glow)}.sv-card:hover::after{opacity:.04}
+.sv-card>*{position:relative;z-index:1}
+.sv-ic{font-size:28px;margin-bottom:14px;display:block}
+.sv-nm{font-size:15px;font-weight:700;color:var(--t0);margin-bottom:8px;letter-spacing:-.01em}
+.sv-ds{font-size:13px;color:var(--t2);line-height:1.65}
+
+/* process */
+#process{background:var(--bg1)}
+.pr-steps{display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin-top:52px;position:relative}
+.pr-steps::before{content:'';position:absolute;top:20px;left:6%;right:6%;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),var(--purple),transparent)}
+.pr-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 6px}
+.pr-ic{width:40px;height:40px;border-radius:50%;background:var(--bg2);border:1px solid var(--b0);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:14px;position:relative;z-index:1;transition:all var(--dur)}
+.pr-step:hover .pr-ic{border-color:var(--blue);background:var(--blo);box-shadow:var(--glow)}
+.pr-nm{font-size:11px;font-weight:700;color:var(--t0);letter-spacing:.02em;margin-bottom:4px}
+.pr-ds{font-size:10px;color:var(--t3);line-height:1.5}
+
+/* contact */
+#contact{background:var(--bg0)}
+.ct-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:72px;margin-top:52px;align-items:start}
+.ct-title{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--t0);margin-bottom:14px;line-height:1.3;text-wrap:balance}
+.ct-desc{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:28px}
+.ct-links{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.ct-link{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-md);text-decoration:none;color:var(--t1);font-size:13px;transition:all var(--dur);cursor:pointer}
+.ct-link:hover{border-color:var(--b1);color:var(--t0);background:var(--blo);transform:translateX(4px)}
+.ct-ic{width:34px;height:34px;border-radius:7px;background:var(--blo);border:1px solid rgba(59,130,246,.15);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ct-lbl{font-size:10px;color:var(--t3);font-weight:600;display:block;margin-bottom:1px;letter-spacing:.04em;text-transform:uppercase}
+.ct-val{font-weight:600;font-size:12px}
+.ct-form{background:var(--bg2);border:1px solid var(--b0);border-radius:var(--r-lg);padding:36px}
+.cf-title{font-size:19px;font-weight:700;color:var(--t0);letter-spacing:-.02em;margin-bottom:3px}
+.cf-sub{font-size:13px;color:var(--t2);margin-bottom:28px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fg{margin-bottom:18px;display:flex;flex-direction:column;gap:7px}
+.fg label{font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.06em;text-transform:uppercase}
+.fg input,.fg textarea,.fg select{background:var(--bg3);border:1px solid var(--b0);border-radius:var(--r-sm);padding:11px 14px;font-size:13px;color:var(--t0);font-family:var(--fs);transition:border-color var(--dur),box-shadow var(--dur);outline:none;width:100%}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.1)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--t3)}
+.fg textarea{min-height:110px;resize:vertical}
+.fg select{cursor:pointer}.fg select option{background:var(--bg2)}
+.f-submit{width:100%;padding:13px;font-size:14px;font-weight:600;border-radius:10px;border:none;background:var(--blue);color:#fff;cursor:pointer;font-family:var(--fs);transition:all var(--dur);display:flex;align-items:center;justify-content:center;gap:8px}
+.f-submit:hover{background:#2563eb;box-shadow:var(--glow);transform:translateY(-1px)}
+.f-ok{display:none;text-align:center;padding:44px 24px}
+.f-ok.show{display:block}
+.ok-ic{font-size:44px;margin-bottom:14px}
+.ok-t{font-size:20px;font-weight:700;color:var(--t0);margin-bottom:6px}
+.ok-m{font-size:13px;color:var(--t2)}
+
+/* footer */
+footer{background:var(--bg1);border-top:1px solid var(--b0);padding:44px 48px}
+.ft-in{max-width:var(--mw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.ft-logo{font-size:17px;font-weight:800;letter-spacing:-.05em;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ft-copy{font-size:12px;color:var(--t3)}
+.ft-soc{display:flex;gap:10px}
+.ft-s{width:34px;height:34px;border-radius:7px;border:1px solid var(--b0);display:flex;align-items:center;justify-content:center;color:var(--t2);text-decoration:none;font-size:14px;transition:all var(--dur);cursor:pointer}
+.ft-s:hover{border-color:var(--b1);color:var(--t0);background:var(--blo)}
+
+/* back to top */
+#btt{position:fixed;bottom:28px;right:28px;width:42px;height:42px;border-radius:10px;background:var(--bg2);border:1px solid var(--b0);display:flex;align-items:center;justify-content:center;color:var(--t2);cursor:pointer;font-size:17px;transition:all var(--dur);opacity:0;transform:translateY(10px);pointer-events:none;z-index:50}
+#btt.show{opacity:1;transform:translateY(0);pointer-events:all}
+#btt:hover{border-color:var(--b1);color:var(--t0);background:var(--blo)}
+
+/* command palette */
+.cmd-ov{position:fixed;inset:0;background:rgba(5,8,22,.8);backdrop-filter:blur(8px);z-index:9000;display:flex;align-items:flex-start;justify-content:center;padding-top:14vh;opacity:0;pointer-events:none;transition:opacity .2s}
+.cmd-ov.open{opacity:1;pointer-events:all}
+.cmd-pal{width:100%;max-width:540px;background:var(--bg2);border:1px solid var(--b1);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.6);transform:scale(.96) translateY(-8px);transition:transform .2s var(--ease)}
+.cmd-ov.open .cmd-pal{transform:scale(1) translateY(0)}
+.cmd-iw{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--b0)}
+.cmd-ic{color:var(--t3);font-size:17px}
+.cmd-in{flex:1;background:transparent;border:none;outline:none;font-size:15px;color:var(--t0);font-family:var(--fs)}
+.cmd-in::placeholder{color:var(--t3)}
+.cmd-kh{font-size:10px;color:var(--t3);padding:3px 6px;border:1px solid var(--b0);border-radius:4px;font-family:var(--fm)}
+.cmd-res{max-height:300px;overflow-y:auto;padding:8px}
+.cmd-gl{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;padding:8px 12px 3px}
+.cmd-it{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:7px;cursor:pointer;transition:background var(--dur);color:var(--t1);font-size:13px}
+.cmd-it:hover,.cmd-it.sel{background:var(--blo);color:var(--t0)}
+.cmd-ii{color:var(--t3);font-size:15px;width:20px;text-align:center}
+.cmd-ft{padding:10px 18px;border-top:1px solid var(--b0);display:flex;align-items:center;gap:14px;font-size:10px;color:var(--t3)}
+.cmd-ft kbd{padding:2px 5px;border:1px solid var(--b0);border-radius:3px;font-family:var(--fm);font-size:10px}
+
+/* responsive */
+@media(max-width:1024px){
+  .ab-grid,.ct-grid{grid-template-columns:1fr;gap:44px}
+  .sk-grid{grid-template-columns:repeat(2,1fr)}
+  .pr-steps{grid-template-columns:repeat(4,1fr);gap:20px}
+  .pr-steps::before{display:none}
+}
+@media(max-width:768px){
+  :root{--py:64px}
+  section,nav{padding-left:24px;padding-right:24px}
+  nav{padding:0 24px}
+  .n-links,.n-right .btn{display:none}
+  .hbg{display:flex}
+  .h-inner{grid-template-columns:1fr;padding-top:72px}
+  .term{display:none}
+  .sk-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr}
+  .pr-steps{grid-template-columns:repeat(2,1fr)}
+  .pj-grid{grid-template-columns:1fr}
+  .ft-in{flex-direction:column;align-items:flex-start}
+  #cd,#cr{display:none}
+  body{cursor:auto}
+  .tk-head{padding:0 24px}
+}
+@media(max-width:480px){
+  .h-name{font-size:38px}
+  .ab-stats{grid-template-columns:1fr 1fr}
+  .pr-steps{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
+<div id="pb"></div>
+<div id="cd"></div>
+<div id="cr"></div>
+
+<div id="ldr">
+  <div class="ldr-name">DW</div>
+  <div class="ldr-bar"><div class="ldr-fill"></div></div>
+</div>
+
+<div class="cmd-ov" id="cmd">
+  <div class="cmd-pal">
+    <div class="cmd-iw">
+      <span class="cmd-ic">⌕</span>
+      <input class="cmd-in" id="cmd-in" placeholder="Type a command or search…" autocomplete="off">
+      <span class="cmd-kh">ESC</span>
+    </div>
+    <div class="cmd-res" id="cmd-res">
+      <div class="cmd-gl">Navigate</div>
+      <div class="cmd-it" data-action="scroll" data-target="hero">
+        <span class="cmd-ii">⌂</span>Home
+      </div>
+      <div class="cmd-it" data-action="scroll" data-target="about">
+        <span class="cmd-ii">◎</span>About
+      </div>
+      <div class="cmd-it" data-action="scroll" data-target="skills">
+        <span class="cmd-ii">◈</span>Skills
+      </div>
+      <div class="cmd-it" data-action="scroll" data-target="experience">
+        <span class="cmd-ii">◷</span>Experience
+      </div>
+      <div class="cmd-it" data-action="scroll" data-target="projects">
+        <span class="cmd-ii">◻</span>Projects
+      </div>
+      <div class="cmd-it" data-action="scroll" data-target="services">
+        <span class="cmd-ii">◈</span>Services
+      </div>
+      <div class="cmd-it" data-action="scroll" data-target="contact">
+        <span class="cmd-ii">✉</span>Contact
+      </div>
+      <div class="cmd-gl">Links</div>
+      <div class="cmd-it" data-action="open" data-url="https://github.com/Darshanwala12">
+        <span class="cmd-ii">⎇</span>GitHub → Darshanwala12
+      </div>
+      <div class="cmd-it" data-action="open" data-url="https://linkedin.com/in/darshan-web-developer">
+        <span class="cmd-ii">in</span>LinkedIn Profile
+      </div>
+      <div class="cmd-it" data-action="copy" data-val="darshan0707d@gmail.com">
+        <span class="cmd-ii">✉</span>Copy Email Address
+      </div>
+      <div class="cmd-gl">Actions</div>
+      <div class="cmd-it" data-action="theme">
+        <span class="cmd-ii">◑</span>Toggle Theme
+      </div>
+    </div>
+    <div class="cmd-ft">
+      <span><kbd>↑↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> select</span>
+      <span><kbd>ESC</kbd> close</span>
+      <span style="margin-left:auto"><kbd>Ctrl K</kbd> open</span>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a class="n-logo" onclick="scrollTo('hero')">DW</a>
+  <ul class="n-links">
+    <li><a onclick="scrollTo('about')">About</a></li>
+    <li><a onclick="scrollTo('skills')">Skills</a></li>
+    <li><a onclick="scrollTo('experience')">Experience</a></li>
+    <li><a onclick="scrollTo('projects')">Projects</a></li>
+    <li><a onclick="scrollTo('services')">Services</a></li>
+    <li><a onclick="scrollTo('contact')">Contact</a></li>
+  </ul>
+  <div class="n-right">
+    <button class="icon-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle theme">◑</button>
+    <button class="icon-btn" id="cmd-btn" title="Command palette (Ctrl+K)" aria-label="Command palette">⌕</button>
+    <a class="btn btn-p" onclick="scrollTo('contact')">Hire Me</a>
+    <div class="hbg" id="hbg" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<div class="mob-nav" id="mob-nav">
+  <a onclick="mclose('about')">About</a>
+  <a onclick="mclose('skills')">Skills</a>
+  <a onclick="mclose('experience')">Experience</a>
+  <a onclick="mclose('projects')">Projects</a>
+  <a onclick="mclose('services')">Services</a>
+  <a onclick="mclose('contact')">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-grid"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="h-inner">
+    <div class="h-left">
+      <div class="h-avail"><span class="adot"></span>Available for new projects</div>
+      <p class="h-hi">darshan.wala()</p>
+      <h1 class="h-name">
+        <span>Darshan</span>
+        <span class="ln">Wala</span>
+      </h1>
+      <div class="h-role">
+        <span class="typ" id="typ"></span><span class="cur"></span>
+      </div>
+      <p class="h-desc">Full-Stack Web Developer with <strong>4+ years</strong> building high-performance web applications across eCommerce, CRM, lead-generation, and AI-powered platforms. Based in Ahmedabad, India — working globally.</p>
+      <div class="h-ctas">
+        <a class="btn btn-p" onclick="scrollTo('projects')">View Projects →</a>
+        <a class="btn btn-g" onclick="scrollTo('contact')">Let's Work Together</a>
+        <a class="btn btn-g" href="https://linkedin.com/in/darshan-web-developer" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <div class="h-stats">
+        <div class="st"><div class="st-n"><span class="counter" data-target="4">0</span><span>+</span></div><div class="st-l">Years Exp.</div></div>
+        <div class="st"><div class="st-n"><span class="counter" data-target="20">0</span><span>+</span></div><div class="st-l">Projects</div></div>
+        <div class="st"><div class="st-n"><span class="counter" data-target="10">0</span><span>+</span></div><div class="st-l">Tech Stack</div></div>
+      </div>
+    </div>
+    <div class="h-right">
+      <div class="term">
+        <div class="term-h">
+          <div class="term-dots"><span></span><span></span><span></span></div>
+          <span class="term-title">darshan@portfolio ~ zsh</span>
+        </div>
+        <div class="term-b">
+          <div class="tl"><span class="tp">$</span><span class="tc">node init.js --dev</span></div>
+          <div class="tl"><span class="td">// Bootstrapping Darshan Wala portfolio...</span></div>
+          <div class="tl"><span class="tp">$</span><span class="tc">darshan.skills.load()</span></div>
+          <div class="tl"><span class="to">✓ React + Next.js + TypeScript</span></div>
+          <div class="tl"><span class="to">✓ Django + Node.js + Laravel</span></div>
+          <div class="tl"><span class="to">✓ WordPress + WooCommerce + Shopify</span></div>
+          <div class="tl"><span class="to">✓ MySQL + MongoDB + Supabase</span></div>
+          <div class="tl"><span class="to">✓ AI APIs + OpenAI + Claude</span></div>
+          <div class="tl"><span class="tp">$</span><span class="tc">darshan.experience.years</span></div>
+          <div class="tl"><span class="ts">→ 4+ years | 4 companies | 20+ projects</span></div>
+          <div class="tl"><span class="tp">$</span><span class="tc">darshan.status</span></div>
+          <div class="tl"><span class="ts">✓ Available for freelance & full-time roles</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="ab-grid">
+      <div class="ab-text reveal">
+        <span class="sec-label">About Me</span>
+        <h2 class="sec-title">Turning ideas into<br><span class="grad-t">digital products</span></h2>
+        <br>
+        <p>I'm a <strong>Full-Stack Web Developer</strong> from Ahmedabad, Gujarat, who has spent the last 4+ years building web products that people actually use — from <span class="hl">B2B marketplaces</span> and <span class="hl">custom CRM systems</span> to high-converting <span class="hl">eCommerce platforms</span> and AI-powered automation tools.</p>
+        <p>My work spans the entire stack: designing intuitive front-ends with <strong>React and Next.js</strong>, building robust back-end services with <strong>Django, Node.js, and Laravel</strong>, and integrating everything with third-party APIs and AI services to create products that scale.</p>
+        <p>Currently at <strong>Auriic Services</strong> where I architect full-stack applications, build CRM systems, and lead eCommerce development. Previously delivered solutions at MCS Venture, Simulas, and Quarec Resources across diverse industries.</p>
+        <div class="ab-socials">
+          <a class="soc" href="https://github.com/Darshanwala12" target="_blank" rel="noopener">⎇ GitHub</a>
+          <a class="soc" href="https://linkedin.com/in/darshan-web-developer" target="_blank" rel="noopener">in LinkedIn</a>
+          <a class="soc" href="mailto:darshan0707d@gmail.com">✉ Email</a>
+          <a class="soc" href="tel:+917802815478">☏ +91 78028 15478</a>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="ab-stats">
+          <div class="ab-sc">
+            <div class="ab-sn grad-t"><span class="counter" data-target="4">0</span>+</div>
+            <div class="ab-sl">Years of experience</div>
+          </div>
+          <div class="ab-sc">
+            <div class="ab-sn" style="background:linear-gradient(135deg,#22d3ee,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><span class="counter" data-target="20">0</span>+</div>
+            <div class="ab-sl">Projects delivered</div>
+          </div>
+          <div class="ab-sc">
+            <div class="ab-sn" style="background:linear-gradient(135deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><span class="counter" data-target="4">0</span></div>
+            <div class="ab-sl">Companies worked</div>
+          </div>
+          <div class="ab-sc">
+            <div class="ab-sn" style="background:linear-gradient(135deg,#34d399,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text"><span class="counter" data-target="10">0</span>+</div>
+            <div class="ab-sl">Tech stacks mastered</div>
+          </div>
+        </div>
+        <div class="ph-card">
+          <p class="ph-text">Clean code isn't just readable — it's maintainable, performant, and built with the next developer in mind. I believe great software is the intersection of technical precision and genuine empathy for the end user.</p>
+          <p class="ph-attr">— Development philosophy</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-label">Technical Skills</span>
+      <h2 class="sec-title">Tools I build <span class="grad-t">great things</span> with</h2>
+      <p class="sec-sub">A comprehensive stack covering frontend, backend, CMS, databases, AI integration, and everything in between.</p>
+    </div>
+    <div class="sk-grid">
+      <div class="sk-card reveal d1">
+        <span class="sk-ic">⚛</span>
+        <div class="sk-cat">Frontend Development</div>
+        <div class="tags">
+          <span class="tag a">React</span><span class="tag a">Next.js</span><span class="tag">TypeScript</span><span class="tag">JavaScript</span><span class="tag">jQuery</span><span class="tag">Ajax</span><span class="tag">Elementor</span><span class="tag">Tailwind CSS</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d2">
+        <span class="sk-ic">⚙</span>
+        <div class="sk-cat">Backend Development</div>
+        <div class="tags">
+          <span class="tag c">Node.js</span><span class="tag c">Express</span><span class="tag c">Django</span><span class="tag c">Laravel</span><span class="tag">REST API</span><span class="tag">Python</span><span class="tag">PHP</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d3">
+        <span class="sk-ic">🌐</span>
+        <div class="sk-cat">CMS & eCommerce</div>
+        <div class="tags">
+          <span class="tag p">WordPress</span><span class="tag p">WooCommerce</span><span class="tag p">Shopify</span><span class="tag">ACF</span><span class="tag">Custom Plugins</span><span class="tag">Custom Themes</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d1">
+        <span class="sk-ic">🗄</span>
+        <div class="sk-cat">Databases</div>
+        <div class="tags">
+          <span class="tag a">MySQL</span><span class="tag c">MongoDB</span><span class="tag">Supabase</span><span class="tag">Firebase</span><span class="tag">Firestore</span><span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d2">
+        <span class="sk-ic">🤖</span>
+        <div class="sk-cat">AI & Integrations</div>
+        <div class="tags">
+          <span class="tag p">OpenAI API</span><span class="tag p">Claude API</span><span class="tag">AI Automation</span><span class="tag">Webhooks</span><span class="tag">Third-party APIs</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d3">
+        <span class="sk-ic">🛠</span>
+        <div class="sk-cat">Tools & DevOps</div>
+        <div class="tags">
+          <span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Vercel</span><span class="tag">Docker</span><span class="tag">Agile</span><span class="tag c">GTM</span><span class="tag">Cursor AI</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d1">
+        <span class="sk-ic">📱</span>
+        <div class="sk-cat">Mobile & Languages</div>
+        <div class="tags">
+          <span class="tag a">React Native</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">Sass</span><span class="tag">TypeScript</span><span class="tag">Python</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d2">
+        <span class="sk-ic">📈</span>
+        <div class="sk-cat">Marketing & Growth</div>
+        <div class="tags">
+          <span class="tag c">SEO</span><span class="tag">Google Ads</span><span class="tag">Meta Ads</span><span class="tag">Analytics</span><span class="tag">Core Web Vitals</span><span class="tag">CRO</span>
+        </div>
+      </div>
+      <div class="sk-card reveal d3">
+        <span class="sk-ic">🎯</span>
+        <div class="sk-cat">Soft Skills & Process</div>
+        <div class="tags">
+          <span class="tag p">Problem Solving</span><span class="tag">Communication</span><span class="tag">Agile/Scrum</span><span class="tag">Code Review</span><span class="tag">Mentoring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-label">Work Experience</span>
+      <h2 class="sec-title">4+ years of <span class="grad-t">real-world impact</span></h2>
+      <p class="sec-sub">From WordPress development to full-stack AI-powered applications — click each role to expand details.</p>
+    </div>
+    <div class="tl-wrap" style="margin-top:52px">
+      <div class="tl-item exp reveal d1">
+        <div class="tl-dot"></div>
+        <div class="tl-per">Jan 2026 – Present</div>
+        <div class="tl-role">Full-Stack Web Developer</div>
+        <div class="tl-co">Auriic Services</div>
+        <div class="tl-tog"><span class="tog-ic">▶</span>&nbsp;Details</div>
+        <div class="tl-body">
+          <ul>
+            <li>Build full-stack web applications using React, Next.js, and TypeScript frontend with Django and Node.js/Express backend services</li>
+            <li>Develop custom CRM systems to streamline workflows, automate processes, and manage customer data backed by MySQL and MongoDB</li>
+            <li>Design and develop secure, scalable REST APIs (Django, Express, Laravel) for web and mobile integrations</li>
+            <li>Use Supabase for authentication, real-time data, and Postgres-backed application features</li>
+            <li>Build high-converting eCommerce platforms with WordPress, WooCommerce, and Shopify with optimized checkout flows</li>
+            <li>Create AI-powered solutions with OpenAI and Claude API integrations to automate repetitive business processes</li>
+            <li>Developed auriic.co from scratch; redesigned aurrum.co with improved performance and UX</li>
+          </ul>
+          <div class="tl-tech">
+            <span class="tag a">React</span><span class="tag a">Next.js</span><span class="tag a">TypeScript</span><span class="tag c">Django</span><span class="tag c">Node.js</span><span class="tag">Supabase</span><span class="tag p">OpenAI</span><span class="tag">WordPress</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item reveal d2">
+        <div class="tl-dot"></div>
+        <div class="tl-per">Apr 2025 – Dec 2025</div>
+        <div class="tl-role">WordPress Developer</div>
+        <div class="tl-co">Simulas</div>
+        <div class="tl-tog"><span class="tog-ic">▶</span>&nbsp;Details</div>
+        <div class="tl-body">
+          <ul>
+            <li>Led WordPress theme and plugin development, HTML/CSS structuring, and JavaScript/jQuery enhancements</li>
+            <li>Implemented on-page SEO strategies and content optimization to improve organic search rankings</li>
+            <li>Managed hosting, server configuration, and performance optimization for production websites</li>
+            <li>Improved Core Web Vitals and overall site speed; published and maintained blog content</li>
+          </ul>
+          <div class="tl-tech">
+            <span class="tag p">WordPress</span><span class="tag">PHP</span><span class="tag">jQuery</span><span class="tag c">SEO</span><span class="tag">Performance</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item reveal d3">
+        <div class="tl-dot"></div>
+        <div class="tl-per">Dec 2023 – Mar 2025</div>
+        <div class="tl-role">WordPress Developer</div>
+        <div class="tl-co">MCS Venture</div>
+        <div class="tl-tog"><span class="tog-ic">▶</span>&nbsp;Details</div>
+        <div class="tl-body">
+          <ul>
+            <li>Developed custom WordPress themes, plugins, and REST API integrations with Laravel, React, and Node.js/Express</li>
+            <li>Built TypeScript-based React interfaces and authentication workflows in Laravel using Sanctum/Passport</li>
+            <li>Used HTML, CSS, Sass, JavaScript, jQuery, and Ajax to build dynamic, responsive interfaces</li>
+            <li>Managed version control with GitHub, improving team collaboration and deployment workflows</li>
+          </ul>
+          <div class="tl-tech">
+            <span class="tag p">WordPress</span><span class="tag c">Laravel</span><span class="tag a">React</span><span class="tag">TypeScript</span><span class="tag">Sass</span><span class="tag">GitHub</span>
+          </div>
+        </div>
+      </div>
+      <div class="tl-item reveal d4">
+        <div class="tl-dot"></div>
+        <div class="tl-per">Oct 2022 – Dec 2023</div>
+        <div class="tl-role">WordPress Developer</div>
+        <div class="tl-co">Quarec Resources</div>
+        <div class="tl-tog"><span class="tog-ic">▶</span>&nbsp;Details</div>
+        <div class="tl-body">
+          <ul>
+            <li>Delivered custom WordPress and Shopify solutions with backend API integrations</li>
+            <li>Leveraged action and filter hooks to streamline workflows and extend platform functionality</li>
+            <li>Built responsive UI/UX components using HTML, CSS, Sass, and jQuery</li>
+            <li>Integrated third-party services and payment gateways for eCommerce platforms</li>
+          </ul>
+          <div class="tl-tech">
+            <span class="tag p">WordPress</span><span class="tag p">Shopify</span><span class="tag">jQuery</span><span class="tag">Sass</span><span class="tag c">REST API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-label">Key Projects</span>
+      <h2 class="sec-title">Work that <span class="grad-t">speaks for itself</span></h2>
+      <p class="sec-sub">Selected projects across B2B marketplaces, eCommerce, CRM systems, and corporate websites.</p>
+    </div>
+    <div class="pj-grid">
+      <div class="pj-card reveal d1">
+        <div class="pj-vis pv1">
+          <div class="pj-code">
+            <div><span class="cc">const</span> <span class="cb">leads</span> = <span class="cc">await</span> api.getLeads()</div>
+            <div><span class="cm">// Match homeowners → designers</span></div>
+            <div><span class="cb">leads</span>.filter(l => l.<span class="cg">verified</span>)</div>
+            <div>&nbsp;&nbsp;&nbsp;.map(l => assignDesigner(l))</div>
+            <div><span class="cm">// Credit flow + admin dashboard</span></div>
+          </div>
+          <span class="pj-badge bl">Live</span>
+        </div>
+        <div class="pj-body">
+          <div class="pj-title">Scale Studio</div>
+          <div class="pj-desc">B2B lead-generation marketplace matching verified homeowner enquiries to interior designers across India. Built admin lead management, designer onboarding, and a credit/purchase flow.</div>
+          <div class="pj-tags">
+            <span class="tag a">Next.js</span><span class="tag a">React</span><span class="tag">TypeScript</span><span class="tag c">Supabase</span>
+          </div>
+          <div class="pj-acts">
+            <a class="btn btn-g" href="https://scale-studio-ebon.vercel.app" target="_blank" rel="noopener">Live ↗</a>
+            <a class="btn btn-g" href="https://github.com/Darshanwala12/Scale-Studio" target="_blank" rel="noopener">Code ⎇</a>
+          </div>
+        </div>
+      </div>
+      <div class="pj-card reveal d2">
+        <div class="pj-vis pv2">
+          <div class="pj-code">
+            <div><span class="cp">wp_query</span>([</div>
+            <div>&nbsp;&nbsp;<span class="cg">'post_type'</span> => <span class="cy">'product'</span>,</div>
+            <div>&nbsp;&nbsp;<span class="cg">'stock_status'</span> => <span class="cy">'in_stock'</span>,</div>
+            <div>&nbsp;&nbsp;<span class="cm">// Real-time inventory sync</span></div>
+            <div>])</div>
+          </div>
+          <span class="pj-badge bl">Live</span>
+        </div>
+        <div class="pj-body">
+          <div class="pj-title">Xphonez</div>
+          <div class="pj-desc">Refurbished electronics marketplace for a wholesale business specializing in acquisition, recycling, and redistribution of devices. Features custom templates, advanced product listings, real-time inventory.</div>
+          <div class="pj-tags">
+            <span class="tag p">WordPress</span><span class="tag p">WooCommerce</span><span class="tag">Custom Plugins</span>
+          </div>
+          <div class="pj-acts">
+            <a class="btn btn-g" href="https://xphonez.com" target="_blank" rel="noopener">Live ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="pj-card reveal d3">
+        <div class="pj-vis pv3">
+          <div class="pj-code">
+            <div><span class="cc">class</span> <span class="cb">CRMPipeline</span> {</div>
+            <div>&nbsp;&nbsp;<span class="cg">track</span>(lead: <span class="cp">Lead</span>) {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">this</span>.notify(lead.stage)</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cc">this</span>.db.update(lead.id)</div>
+            <div>&nbsp;&nbsp;} <span class="cm">// Role-based access</span></div>
+            <div>}</div>
+          </div>
+          <span class="pj-badge bp">Private</span>
+        </div>
+        <div class="pj-body">
+          <div class="pj-title">Custom CRM System</div>
+          <div class="pj-desc">Full-featured CRM with client management, lead tracking, follow-up automation, role-based access, pipeline management, reporting dashboards, email notifications, and data export.</div>
+          <div class="pj-tags">
+            <span class="tag a">React</span><span class="tag c">Express</span><span class="tag">MySQL</span><span class="tag c">MongoDB</span>
+          </div>
+          <div class="pj-acts">
+            <a class="btn btn-g" onclick="scrollTo('contact')">Request Demo</a>
+          </div>
+        </div>
+      </div>
+      <div class="pj-card reveal d1">
+        <div class="pj-vis pv4">
+          <div class="pj-code">
+            <div><span class="cm">// Local SEO score: 98/100</span></div>
+            <div><span class="cg">Leads</span>: <span class="cy">120+</span> <span class="cm">/ month</span></div>
+            <div><span class="cg">Ranking</span>: <span class="cy">#1</span> workers comp LA</div>
+            <div><span class="cm">// CRO landing pages: 8</span></div>
+            <div>&lt;<span class="cb">LocalBusiness</span> schema /&gt;</div>
+          </div>
+          <span class="pj-badge bl">Live</span>
+        </div>
+        <div class="pj-body">
+          <div class="pj-title">RP Law Group</div>
+          <div class="pj-desc">Custom WordPress sites for a California workers' compensation and personal-injury law firm. Focused on local SEO, lead-capture forms, and conversion-oriented landing pages.</div>
+          <div class="pj-tags">
+            <span class="tag p">WordPress</span><span class="tag c">SEO</span><span class="tag">Lead Gen</span><span class="tag">CRO</span>
+          </div>
+          <div class="pj-acts">
+            <a class="btn btn-g" href="https://rplawcenter.com" target="_blank" rel="noopener">Live ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="pj-card reveal d2">
+        <div class="pj-vis pv5">
+          <div class="pj-code">
+            <div><span class="cm">// auriic.co — built from scratch</span></div>
+            <div><span class="cc">export default function</span> <span class="cb">AuriicSite</span>() {</div>
+            <div>&nbsp;&nbsp;<span class="cg">Performance</span>: <span class="cy">97/100</span></div>
+            <div>&nbsp;&nbsp;<span class="cg">SEO</span>: <span class="cy">95/100</span></div>
+            <div>} <span class="cm">// Custom theme + ACF</span></div>
+          </div>
+          <span class="pj-badge bl">Live</span>
+        </div>
+        <div class="pj-body">
+          <div class="pj-title">Auriic.co & Aurrum.co</div>
+          <div class="pj-desc">Built auriic.co from scratch with custom theme development and tailored functionality. Redesigned aurrum.co for performance, UI/UX improvements, and mobile responsiveness.</div>
+          <div class="pj-tags">
+            <span class="tag p">WordPress</span><span class="tag">Custom Themes</span><span class="tag">ACF</span><span class="tag c">SEO</span>
+          </div>
+          <div class="pj-acts">
+            <a class="btn btn-g" href="https://auriic.co" target="_blank" rel="noopener">Live ↗</a>
+          </div>
+        </div>
+      </div>
+      <div class="pj-card reveal d3">
+        <div class="pj-vis pv6">
+          <div class="pj-code">
+            <div><span class="cm">// PixelCraft — agency site</span></div>
+            <div>gsap.from(<span class="cy">'.hero'</span>, {</div>
+            <div>&nbsp;&nbsp;<span class="cg">opacity</span>: <span class="cb">0</span>, <span class="cg">y</span>: <span class="cb">60</span>,</div>
+            <div>&nbsp;&nbsp;<span class="cg">duration</span>: <span class="cb">1.2</span>,</div>
+            <div>&nbsp;&nbsp;<span class="cg">ease</span>: <span class="cy">'power3'</span></div>
+            <div>})</div>
+          </div>
+          <span class="pj-badge bp">Case Study</span>
+        </div>
+        <div class="pj-body">
+          <div class="pj-title">PixelCraft Studio</div>
+          <div class="pj-desc">Fully custom, visually rich agency website with pixel-perfect responsive layouts, smooth animations, and Elementor/ACF for flexible content management. Built for a web design & branding agency.</div>
+          <div class="pj-tags">
+            <span class="tag p">WordPress</span><span class="tag">HTML5</span><span class="tag">Sass</span><span class="tag">JavaScript</span>
+          </div>
+          <div class="pj-acts">
+            <a class="btn btn-g" onclick="scrollTo('contact')">Request Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH TICKER -->
+<section id="techstack">
+  <div class="tk-head reveal">
+    <span class="sec-label">Tech Stack</span>
+    <h2 class="sec-title">Technologies I <span class="grad-t">work with daily</span></h2>
+  </div>
+  <div class="tk-wrap">
+    <div class="tk-row">
+      <span class="tc"><span class="tc-ic">⚛</span>React</span>
+      <span class="tc"><span class="tc-ic">▲</span>Next.js</span>
+      <span class="tc"><span class="tc-ic">🔷</span>TypeScript</span>
+      <span class="tc"><span class="tc-ic">🟢</span>Node.js</span>
+      <span class="tc"><span class="tc-ic">🐍</span>Python</span>
+      <span class="tc"><span class="tc-ic">⚙</span>Django</span>
+      <span class="tc"><span class="tc-ic">🔴</span>Laravel</span>
+      <span class="tc"><span class="tc-ic">🐘</span>PHP</span>
+      <span class="tc"><span class="tc-ic">☁</span>Supabase</span>
+      <span class="tc"><span class="tc-ic">🍃</span>MongoDB</span>
+      <!-- duplicate for seamless loop -->
+      <span class="tc"><span class="tc-ic">⚛</span>React</span>
+      <span class="tc"><span class="tc-ic">▲</span>Next.js</span>
+      <span class="tc"><span class="tc-ic">🔷</span>TypeScript</span>
+      <span class="tc"><span class="tc-ic">🟢</span>Node.js</span>
+      <span class="tc"><span class="tc-ic">🐍</span>Python</span>
+      <span class="tc"><span class="tc-ic">⚙</span>Django</span>
+      <span class="tc"><span class="tc-ic">🔴</span>Laravel</span>
+      <span class="tc"><span class="tc-ic">🐘</span>PHP</span>
+      <span class="tc"><span class="tc-ic">☁</span>Supabase</span>
+      <span class="tc"><span class="tc-ic">🍃</span>MongoDB</span>
+    </div>
+    <div class="tk-row rev">
+      <span class="tc"><span class="tc-ic">📝</span>WordPress</span>
+      <span class="tc"><span class="tc-ic">🛒</span>WooCommerce</span>
+      <span class="tc"><span class="tc-ic">🟫</span>Shopify</span>
+      <span class="tc"><span class="tc-ic">🗄</span>MySQL</span>
+      <span class="tc"><span class="tc-ic">🔥</span>Firebase</span>
+      <span class="tc"><span class="tc-ic">🤖</span>OpenAI</span>
+      <span class="tc"><span class="tc-ic">⎇</span>Git</span>
+      <span class="tc"><span class="tc-ic">▲</span>Vercel</span>
+      <span class="tc"><span class="tc-ic">🐳</span>Docker</span>
+      <span class="tc"><span class="tc-ic">📱</span>React Native</span>
+      <!-- duplicate -->
+      <span class="tc"><span class="tc-ic">📝</span>WordPress</span>
+      <span class="tc"><span class="tc-ic">🛒</span>WooCommerce</span>
+      <span class="tc"><span class="tc-ic">🟫</span>Shopify</span>
+      <span class="tc"><span class="tc-ic">🗄</span>MySQL</span>
+      <span class="tc"><span class="tc-ic">🔥</span>Firebase</span>
+      <span class="tc"><span class="tc-ic">🤖</span>OpenAI</span>
+      <span class="tc"><span class="tc-ic">⎇</span>Git</span>
+      <span class="tc"><span class="tc-ic">▲</span>Vercel</span>
+      <span class="tc"><span class="tc-ic">🐳</span>Docker</span>
+      <span class="tc"><span class="tc-ic">📱</span>React Native</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-label">Services</span>
+      <h2 class="sec-title">What I can <span class="grad-t">build for you</span></h2>
+      <p class="sec-sub">End-to-end development services from custom web apps to AI-powered automation solutions.</p>
+    </div>
+    <div class="sv-grid">
+      <div class="sv-card reveal d1">
+        <span class="sv-ic">💻</span>
+        <div class="sv-nm">Custom Web Development</div>
+        <div class="sv-ds">Full-stack web applications built with React, Next.js, Node.js, Django, or Laravel — tailored to your business logic.</div>
+      </div>
+      <div class="sv-card reveal d2">
+        <span class="sv-ic">📝</span>
+        <div class="sv-nm">WordPress Development</div>
+        <div class="sv-ds">Custom themes, plugins, and REST API integrations. ACF, Gutenberg, multisite — WordPress without limits.</div>
+      </div>
+      <div class="sv-card reveal d3">
+        <span class="sv-ic">🛍</span>
+        <div class="sv-nm">Shopify & WooCommerce</div>
+        <div class="sv-ds">High-converting eCommerce stores with optimized checkout flows, custom product displays, and payment integrations.</div>
+      </div>
+      <div class="sv-card reveal d1">
+        <span class="sv-ic">⚙</span>
+        <div class="sv-nm">Laravel Applications</div>
+        <div class="sv-ds">Robust backend systems with Sanctum/Passport authentication, queues, events, and clean API architecture.</div>
+      </div>
+      <div class="sv-card reveal d2">
+        <span class="sv-ic">🔌</span>
+        <div class="sv-nm">API Integration</div>
+        <div class="sv-ds">Connect your systems with third-party APIs, webhooks, payment gateways, CRMs, and AI services.</div>
+      </div>
+      <div class="sv-card reveal d3">
+        <span class="sv-ic">🤖</span>
+        <div class="sv-nm">AI Automation</div>
+        <div class="sv-ds">Integrate OpenAI, Claude, and other AI APIs to automate business processes and create intelligent workflows.</div>
+      </div>
+      <div class="sv-card reveal d1">
+        <span class="sv-ic">⚡</span>
+        <div class="sv-nm">Performance Optimization</div>
+        <div class="sv-ds">Core Web Vitals tuning, caching strategies, image optimization, and code splitting for Lighthouse 95+ scores.</div>
+      </div>
+      <div class="sv-card reveal d2">
+        <span class="sv-ic">📈</span>
+        <div class="sv-nm">SEO & Analytics</div>
+        <div class="sv-ds">Technical SEO, structured data, GA4, GTM setup, and content strategy to rank and convert organic traffic.</div>
+      </div>
+      <div class="sv-card reveal d3">
+        <span class="sv-ic">🛡</span>
+        <div class="sv-nm">Maintenance & Support</div>
+        <div class="sv-ds">Ongoing site maintenance, security updates, hosting management, and performance monitoring for peace of mind.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto">
+      <span class="sec-label">How I Work</span>
+      <h2 class="sec-title">A process built for <span class="grad-t">clarity & results</span></h2>
+    </div>
+    <div class="pr-steps reveal d1">
+      <div class="pr-step">
+        <div class="pr-ic">🔍</div>
+        <div class="pr-nm">Discovery</div>
+        <div class="pr-ds">Goals, audience, requirements</div>
+      </div>
+      <div class="pr-step">
+        <div class="pr-ic">📋</div>
+        <div class="pr-nm">Planning</div>
+        <div class="pr-ds">Architecture & timeline</div>
+      </div>
+      <div class="pr-step">
+        <div class="pr-ic">🎨</div>
+        <div class="pr-nm">Design</div>
+        <div class="pr-ds">UI/UX wireframes</div>
+      </div>
+      <div class="pr-step">
+        <div class="pr-ic">⚡</div>
+        <div class="pr-nm">Development</div>
+        <div class="pr-ds">Clean, scalable code</div>
+      </div>
+      <div class="pr-step">
+        <div class="pr-ic">🧪</div>
+        <div class="pr-nm">Testing</div>
+        <div class="pr-ds">QA across devices</div>
+      </div>
+      <div class="pr-step">
+        <div class="pr-ic">🚀</div>
+        <div class="pr-nm">Deployment</div>
+        <div class="pr-ds">Launch & monitoring</div>
+      </div>
+      <div class="pr-step">
+        <div class="pr-ic">🛡</div>
+        <div class="pr-nm">Support</div>
+        <div class="pr-ds">Ongoing maintenance</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="sec-label">Get In Touch</span>
+      <h2 class="sec-title">Let's build something <span class="grad-t">great together</span></h2>
+    </div>
+    <div class="ct-grid">
+      <div class="reveal d1">
+        <div class="ct-title">Open to freelance projects & full-time roles</div>
+        <div class="ct-desc">Whether you have a startup idea, need a WordPress expert, want to build a custom web app, or require AI integration — I'm here to help turn it into reality.</div>
+        <div class="ct-links">
+          <a class="ct-link" href="mailto:darshan0707d@gmail.com">
+            <div class="ct-ic">✉</div>
+            <div>
+              <span class="ct-lbl">Email</span>
+              <span class="ct-val">darshan0707d@gmail.com</span>
+            </div>
+          </a>
+          <a class="ct-link" href="tel:+917802815478">
+            <div class="ct-ic">☏</div>
+            <div>
+              <span class="ct-lbl">Phone</span>
+              <span class="ct-val">+91 78028 15478</span>
+            </div>
+          </a>
+          <a class="ct-link" href="https://linkedin.com/in/darshan-web-developer" target="_blank" rel="noopener">
+            <div class="ct-ic">in</div>
+            <div>
+              <span class="ct-lbl">LinkedIn</span>
+              <span class="ct-val">darshan-web-developer</span>
+            </div>
+          </a>
+          <a class="ct-link" href="https://github.com/Darshanwala12" target="_blank" rel="noopener">
+            <div class="ct-ic">⎇</div>
+            <div>
+              <span class="ct-lbl">GitHub</span>
+              <span class="ct-val">Darshanwala12</span>
+            </div>
+          </a>
+          <div class="ct-link" style="cursor:default">
+            <div class="ct-ic">📍</div>
+            <div>
+              <span class="ct-lbl">Location</span>
+              <span class="ct-val">Ahmedabad, Gujarat, India — Remote Worldwide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ct-form reveal d2">
+        <div id="f-form">
+          <div class="cf-title">Send a message</div>
+          <div class="cf-sub">I'll get back to you within 24 hours.</div>
+          <div class="f-row">
+            <div class="fg"><label>Name</label><input type="text" placeholder="Your name" required></div>
+            <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com" required></div>
+          </div>
+          <div class="fg"><label>Subject</label>
+            <select>
+              <option value="">What's this about?</option>
+              <option>Freelance Project</option>
+              <option>Full-time Opportunity</option>
+              <option>WordPress Development</option>
+              <option>Shopify / eCommerce</option>
+              <option>React / Next.js App</option>
+              <option>AI Integration</option>
+              <option>Performance Optimization</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Message</label><textarea placeholder="Tell me about your project, timeline, and budget…"></textarea></div>
+          <button class="f-submit" id="f-btn" type="button">Send Message →</button>
+        </div>
+        <div class="f-ok" id="f-ok">
+          <div class="ok-ic">✓</div>
+          <div class="ok-t">Message sent!</div>
+          <div class="ok-m">Thanks for reaching out. I'll reply within 24 hours.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-in">
+    <span class="ft-logo">Darshan Wala</span>
+    <span class="ft-copy">© 2026 Darshan Wala. Built with care in Ahmedabad, India.</span>
+    <div class="ft-soc">
+      <a class="ft-s" href="https://github.com/Darshanwala12" target="_blank" rel="noopener" title="GitHub">⎇</a>
+      <a class="ft-s" href="https://linkedin.com/in/darshan-web-developer" target="_blank" rel="noopener" title="LinkedIn">in</a>
+      <a class="ft-s" href="mailto:darshan0707d@gmail.com" title="Email">✉</a>
+      <a class="ft-s" href="tel:+917802815478" title="Call">☏</a>
+    </div>
+  </div>
+</footer>
+
+<button id="btt" title="Back to top" aria-label="Back to top">↑</button>
+
+<script>
+(function(){
+'use strict';
+
+// — Loader
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('ldr').classList.add('gone'),1400);
+});
+
+// — Custom cursor
+const cd=document.getElementById('cd'),cr=document.getElementById('cr');
+if(window.matchMedia('(pointer:fine)').matches){
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cd.style.left=mx+'px';cd.style.top=my+'px';
+  });
+  (function raf(){
+    rx+=(mx-rx)*.15;ry+=(my-ry)*.15;
+    cr.style.left=rx+'px';cr.style.top=ry+'px';
+    requestAnimationFrame(raf);
+  })();
+  document.querySelectorAll('a,button,.pj-card,.tl-item,.sk-card,.sv-card,.cmd-it').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cr.style.width='48px';cr.style.height='48px';cr.style.borderColor='rgba(59,130,246,.7)';});
+    el.addEventListener('mouseleave',()=>{cr.style.width='32px';cr.style.height='32px';cr.style.borderColor='rgba(59,130,246,.45)';});
+  });
+}
+
+// — Progress bar
+const pb=document.getElementById('pb');
+window.addEventListener('scroll',()=>{
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  pb.style.width=pct+'%';
+});
+
+// — Nav scroll
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>20);
+  document.getElementById('btt').classList.toggle('show',window.scrollY>400);
+},{passive:true});
+
+// — Smooth scroll helper
+function scrollTo(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth'});
+}
+window.scrollTo=scrollTo;
+
+// — Active nav
+const sections=['hero','about','skills','experience','projects','techstack','services','process','contact'];
+const navLinks=document.querySelectorAll('.n-links a');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const id=e.target.id;
+      navLinks.forEach(a=>{
+        const fn=a.getAttribute('onclick')||'';
+        a.classList.toggle('act',fn.includes(id));
+      });
+    }
+  });
+},{threshold:.3});
+sections.forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el);});
+
+// — Reveal on scroll
+const rio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>rio.observe(el));
+
+// — Counter animation
+function animCount(el,target,dur=1800){
+  let start=null;
+  const step=ts=>{
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(ease*target);
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=target;
+  };
+  requestAnimationFrame(step);
+}
+const cio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const t=+e.target.dataset.target;
+      animCount(e.target,t);
+      cio.unobserve(e.target);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('.counter').forEach(el=>cio.observe(el));
+
+// — Typing effect
+const roles=['Full-Stack Developer','React & Next.js Expert','WordPress Architect','Laravel & Node.js Dev','AI Integration Specialist','eCommerce Builder'];
+let ri=0,ci=0,del=false;
+const typEl=document.getElementById('typ');
+function type(){
+  const word=roles[ri];
+  if(!del){
+    typEl.textContent=word.slice(0,++ci);
+    if(ci===word.length){del=true;setTimeout(type,1800);return;}
+  } else {
+    typEl.textContent=word.slice(0,--ci);
+    if(ci===0){del=false;ri=(ri+1)%roles.length;setTimeout(type,400);return;}
+  }
+  setTimeout(type,del?60:80);
+}
+setTimeout(type,1500);
+
+// — Timeline toggle
+document.querySelectorAll('.tl-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const wasExp=item.classList.contains('exp');
+    document.querySelectorAll('.tl-item').forEach(i=>i.classList.remove('exp'));
+    if(!wasExp)item.classList.add('exp');
+  });
+});
+
+// — Back to top
+document.getElementById('btt').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// — Mobile nav
+const hbg=document.getElementById('hbg'),mob=document.getElementById('mob-nav');
+hbg.addEventListener('click',()=>mob.classList.toggle('open'));
+window.mclose=function(id){mob.classList.remove('open');scrollTo(id);};
+
+// — Theme toggle
+const themeBtn=document.getElementById('theme-btn');
+let dark=true;
+themeBtn.addEventListener('click',()=>{
+  dark=!dark;
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  themeBtn.textContent=dark?'◑':'☀';
+});
+
+// — Form submit
+document.getElementById('f-btn').addEventListener('click',()=>{
+  document.getElementById('f-form').style.display='none';
+  document.getElementById('f-ok').classList.add('show');
+});
+
+// — Command palette
+const cmdOv=document.getElementById('cmd'),cmdIn=document.getElementById('cmd-in'),cmdRes=document.getElementById('cmd-res');
+let cmdOpen=false;
+function openCmd(){cmdOv.classList.add('open');cmdOpen=true;setTimeout(()=>cmdIn.focus(),50);}
+function closeCmd(){cmdOv.classList.remove('open');cmdOpen=false;cmdIn.value='';}
+document.getElementById('cmd-btn').addEventListener('click',openCmd);
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();cmdOpen?closeCmd():openCmd();}
+  if(e.key==='Escape'&&cmdOpen)closeCmd();
+});
+cmdOv.addEventListener('click',e=>{if(e.target===cmdOv)closeCmd();});
+cmdRes.querySelectorAll('.cmd-it').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const a=item.dataset.action;
+    if(a==='scroll'){scrollTo(item.dataset.target);closeCmd();}
+    else if(a==='open'){window.open(item.dataset.url,'_blank','noopener');closeCmd();}
+    else if(a==='copy'){navigator.clipboard&&navigator.clipboard.writeText(item.dataset.val);closeCmd();}
+    else if(a==='theme'){themeBtn.click();closeCmd();}
+  });
+});
+
+// — Hint toast
+setTimeout(()=>{
+  const t=document.createElement('div');
+  t.textContent='Press Ctrl+K for command palette';
+  t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1f2937;color:#94a3b8;font-size:12px;padding:8px 16px;border-radius:100px;border:1px solid rgba(255,255,255,.08);z-index:500;opacity:0;transition:opacity .4s;pointer-events:none;white-space:nowrap';
+  document.body.appendChild(t);
+  requestAnimationFrame(()=>{t.style.opacity='1';setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),400);},3500);});
+},2500);
+
+})();
+</script>
